@@ -1,0 +1,9 @@
+{
+  "protocol": "oebp",
+  "version": "0.1.0",
+  "kind": "BehaviorSpec",
+  "metadata": {
+    "id": "org.oebp.invalid.missing-spec",
+    "revision": "1.0.0"
+  }
+}

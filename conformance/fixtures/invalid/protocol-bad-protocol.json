@@ -1,0 +1,11 @@
+{
+  "protocol": "other",
+  "version": "0.1.0",
+  "kind": "BehaviorSpec",
+  "metadata": {
+    "id": "org.oebp.fixtures.protocol.invalid",
+    "revision": "1.0.0",
+    "created_at": "2026-06-16T09:00:00Z"
+  },
+  "spec": {}
+}

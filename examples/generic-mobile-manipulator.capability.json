@@ -1,0 +1,162 @@
+{
+  "protocol": "oebp",
+  "version": "0.1.0",
+  "kind": "CapabilityProfile",
+  "metadata": {
+    "id": "org.oebp.examples.generic-mobile-manipulator",
+    "revision": "1.0.0",
+    "created_at": "2026-06-16T09:00:00Z"
+  },
+  "spec": {
+    "embodiment_id": "org.oebp.robot.generic-mobile-manipulator-01",
+    "embodiment_class": "mobile_manipulator",
+    "effectors": [
+      {
+        "id": "robot/right_gripper",
+        "type": "parallel_gripper",
+        "frame": "robot/right_gripper_tool",
+        "max_payload_kg": 1.5,
+        "max_aperture_m": 0.09,
+        "force_feedback": true
+      }
+    ],
+    "sensors": [
+      {"id": "robot/head_rgbd", "type": "depth_camera", "frame": "robot/head_camera", "rate_hz": 30},
+      {"id": "robot/wrist_ft", "type": "force_torque", "frame": "robot/right_gripper_tool", "rate_hz": 200},
+      {"id": "robot/joints", "type": "joint_encoder", "rate_hz": 250}
+    ],
+    "frames": [
+      {"id": "world"},
+      {"id": "robot/base_link", "parent": "world"},
+      {"id": "robot/head_camera", "parent": "robot/base_link"},
+      {"id": "robot/right_gripper_tool", "parent": "robot/base_link"}
+    ],
+    "capabilities": [
+      {
+        "id": "oebp.capability.perception.object_pose",
+        "support": "policy",
+        "parameters": {"max_range_m": 4.0},
+        "quality": {"expected_success": 0.92, "p95_latency_ms": 180}
+      },
+      {
+        "id": "oebp.capability.manipulation.grasp",
+        "support": "planned",
+        "parameters": {"max_payload_kg": 1.5, "max_aperture_m": 0.09, "force_feedback": true},
+        "quality": {"expected_success": 0.86, "p95_latency_ms": 3500}
+      },
+      {
+        "id": "oebp.capability.manipulation.place",
+        "support": "planned",
+        "parameters": {"position_tolerance_m": 0.02},
+        "quality": {"expected_success": 0.9, "p95_latency_ms": 3200}
+      }
+    ],
+    "safety_envelopes": [
+      {"id": "default", "max_base_speed_m_s": 0.5, "max_contact_force_n": 25}
+    ],
+    "adapter_bindings": [
+      {
+        "skill": "oebp.skill.perception.estimate_pose@1",
+        "implementation": {
+          "type": "policy_model",
+          "model": "generic_rgbd_pose_policy_v1"
+        },
+        "parameter_map": {
+          "entity": "observation.entity_ref"
+        },
+        "result_map": {
+          "SUCCESS": "SUCCEEDED"
+        }
+      },
+      {
+        "skill": "oebp.skill.manipulation.reach@1",
+        "implementation": {
+          "type": "behavior_tree",
+          "tree": "navigate_and_reach.xml"
+        },
+        "parameter_map": {
+          "target": "blackboard.target_ref",
+          "effector": "blackboard.tool_ref"
+        },
+        "result_map": {
+          "SUCCESS": "SUCCEEDED"
+        }
+      },
+      {
+        "skill": "oebp.skill.manipulation.grasp@1",
+        "implementation": {
+          "type": "ros2_action",
+          "endpoint": "/right_arm/grasp",
+          "message_type": "generic_robot_msgs/action/Grasp"
+        },
+        "parameter_map": {
+          "object": "goal.object_id",
+          "effector": "goal.effector_id"
+        },
+        "result_map": {
+          "SUCCESS": "SUCCEEDED",
+          "SLIP": "oebp.error.manipulation.object_slipped@1",
+          "NO_CONTACT": "oebp.error.manipulation.no_contact@1"
+        }
+      },
+      {
+        "skill": "oebp.skill.manipulation.lift@1",
+        "implementation": {
+          "type": "ros2_action",
+          "endpoint": "/right_arm/lift",
+          "message_type": "generic_robot_msgs/action/Lift"
+        },
+        "parameter_map": {
+          "distance_m": "goal.distance_m",
+          "effector": "goal.effector_id"
+        },
+        "result_map": {
+          "SUCCESS": "SUCCEEDED"
+        }
+      },
+      {
+        "skill": "oebp.skill.manipulation.place@1",
+        "implementation": {
+          "type": "ros2_action",
+          "endpoint": "/right_arm/place",
+          "message_type": "generic_robot_msgs/action/Place"
+        },
+        "parameter_map": {
+          "object": "goal.object_id",
+          "target": "goal.target_id",
+          "effector": "goal.effector_id"
+        },
+        "result_map": {
+          "SUCCESS": "SUCCEEDED"
+        }
+      },
+      {
+        "skill": "oebp.skill.meta.verify@1",
+        "implementation": {
+          "type": "policy_model",
+          "model": "generic_relation_verifier_v1"
+        },
+        "parameter_map": {
+          "predicate": "query.predicate"
+        },
+        "result_map": {
+          "SUCCESS": "SUCCEEDED"
+        }
+      },
+      {
+        "skill": "oebp.skill.manipulation.release@1",
+        "implementation": {
+          "type": "ros2_action",
+          "endpoint": "/right_arm/release",
+          "message_type": "generic_robot_msgs/action/Release"
+        },
+        "parameter_map": {
+          "effector": "goal.effector_id"
+        },
+        "result_map": {
+          "SUCCESS": "SUCCEEDED"
+        }
+      }
+    ]
+  }
+}

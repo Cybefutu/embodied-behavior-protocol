@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "dataset_id": "org.oebp.datasets.synthetic.v0_1",
+  "description": "Small synthetic OEBP fixture dataset with reference-only observations and actions.",
+  "storage_policy": {
+    "observations": "external_refs_only",
+    "actions": "external_refs_only",
+    "raw_media_embedded": false
+  },
+  "episodes": [
+    {
+      "episode_id": "synthetic-pick-place-fixed-arm-001",
+      "annotation": "episodes/pick-place-fixed-arm.episode.json",
+      "observation_ref": "synthetic://observations/pick-place-fixed-arm-001",
+      "action_ref": "synthetic://actions/pick-place-fixed-arm-001"
+    }
+  ]
+}

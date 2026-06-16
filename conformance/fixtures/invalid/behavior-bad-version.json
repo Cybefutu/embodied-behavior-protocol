@@ -1,0 +1,32 @@
+{
+  "protocol": "oebp",
+  "version": "1.0.0",
+  "kind": "BehaviorSpec",
+  "metadata": {
+    "id": "org.oebp.invalid.bad-version",
+    "revision": "1.0.0"
+  },
+  "spec": {
+    "summary": "Invalid version pattern.",
+    "parameters": {},
+    "requirements": {
+      "capabilities": [],
+      "risk_class": "R0"
+    },
+    "contract": {
+      "preconditions": [],
+      "invariants": [],
+      "success_conditions": [
+        {"op": "exists", "path": "$robot"}
+      ],
+      "failure_conditions": [],
+      "timeout_ms": 1000
+    },
+    "root": {
+      "type": "invoke",
+      "node_id": "noop",
+      "skill": "oebp.skill.meta.verify@1",
+      "args": {}
+    }
+  }
+}

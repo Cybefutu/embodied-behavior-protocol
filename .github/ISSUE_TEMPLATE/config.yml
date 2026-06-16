@@ -1,0 +1,6 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security and safety report
+    url: https://github.com/Cybefutu/embodied-behavior-protocol/security/advisories/new
+    about: Report validator bypasses, unsafe semantics, registry poisoning, or adapter abuse privately.
+

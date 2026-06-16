@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oebp.dev/schemas/0.1/episode-annotation.schema.json",
+  "title": "OEBP EpisodeAnnotation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "version", "kind", "metadata", "spec"],
+  "properties": {
+    "protocol": {"const": "oebp"},
+    "version": {"type": "string", "pattern": "^0\\.1\\.[0-9]+$"},
+    "kind": {"const": "EpisodeAnnotation"},
+    "metadata": {
+      "type": "object",
+      "required": ["id", "revision"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "revision": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "created_at": {"type": "string", "format": "date-time"}
+      },
+      "additionalProperties": false
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["episode_id", "behavior_ref", "capability_profile_ref", "outcome", "trace_ref", "provenance"],
+      "properties": {
+        "episode_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "behavior_ref": {"type": "string", "minLength": 1, "maxLength": 128},
+        "capability_profile_ref": {"type": "string", "minLength": 1, "maxLength": 128},
+        "source_dataset": {"type": "string", "maxLength": 256},
+        "outcome": {"enum": ["succeeded", "failed", "canceled", "preempted", "unsafe", "unknown"]},
+        "error_code": {"type": "string", "maxLength": 128},
+        "trace_ref": {"type": "string", "minLength": 1, "maxLength": 128},
+        "observation_ref": {"type": "string", "maxLength": 256},
+        "action_ref": {"type": "string", "maxLength": 256},
+        "action_codec": {"type": "string", "maxLength": 128},
+        "quality": {
+          "type": "object",
+          "additionalProperties": {"type": "number", "minimum": 0, "maximum": 1},
+          "maxProperties": 64
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["generator_type", "seed", "validator_versions"],
+          "properties": {
+            "generator_type": {"enum": ["human_demo", "transformed_demo", "scripted_expert", "motion_planner", "rl_policy", "vla_policy", "llm_assisted_simulation", "other"]},
+            "model": {"type": "string", "maxLength": 256},
+            "prompt_template_hash": {"type": "string", "maxLength": 128},
+            "seed": {"type": "integer"},
+            "asset_ids": {"type": "array", "items": {"type": "string", "maxLength": 128}, "maxItems": 256, "uniqueItems": true},
+            "simulator": {"type": "string", "maxLength": 128},
+            "adapter_version": {"type": "string", "maxLength": 64},
+            "validator_versions": {"type": "array", "items": {"type": "string", "maxLength": 128}, "minItems": 1, "maxItems": 64},
+            "human_review": {"enum": ["not_reviewed", "approved", "approved_with_notes", "rejected"]}
+          }
+        }
+      }
+    }
+  }
+}

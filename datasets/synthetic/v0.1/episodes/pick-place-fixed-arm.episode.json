@@ -1,0 +1,36 @@
+{
+  "protocol": "oebp",
+  "version": "0.1.0",
+  "kind": "EpisodeAnnotation",
+  "metadata": {
+    "id": "episode.synthetic-pick-place-fixed-arm-001",
+    "revision": "1.0.0",
+    "created_at": "2026-06-16T09:00:00Z"
+  },
+  "spec": {
+    "episode_id": "synthetic-pick-place-fixed-arm-001",
+    "behavior_ref": "org.oebp.examples.pick-and-place",
+    "capability_profile_ref": "org.oebp.adapters.fixed-arm.reference",
+    "source_dataset": "org.oebp.datasets.synthetic.v0_1",
+    "outcome": "succeeded",
+    "trace_ref": "trace.synthetic-pick-place-fixed-arm-001",
+    "observation_ref": "synthetic://observations/pick-place-fixed-arm-001",
+    "action_ref": "synthetic://actions/pick-place-fixed-arm-001",
+    "action_codec": "oebp.synthetic.reference-actions.v1",
+    "quality": {
+      "semantic_alignment": 1.0,
+      "trace_alignment": 1.0
+    },
+    "provenance": {
+      "generator_type": "llm_assisted_simulation",
+      "model": "offline-test-model",
+      "prompt_template_hash": "sha256:test",
+      "seed": 42,
+      "validator_versions": [
+        "oebp-generation-gate/0.1.0",
+        "oebp-episode-builder/0.1.0"
+      ],
+      "human_review": "not_reviewed"
+    }
+  }
+}

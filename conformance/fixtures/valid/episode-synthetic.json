@@ -1,0 +1,32 @@
+{
+  "protocol": "oebp",
+  "version": "0.1.0",
+  "kind": "EpisodeAnnotation",
+  "metadata": {
+    "id": "org.oebp.fixtures.episode.synthetic",
+    "revision": "1.0.0",
+    "created_at": "2026-06-16T09:00:00Z"
+  },
+  "spec": {
+    "episode_id": "episode-001",
+    "behavior_ref": "org.oebp.fixtures.behavior.minimal",
+    "capability_profile_ref": "org.oebp.fixtures.capability.fixed_arm",
+    "source_dataset": "fixture",
+    "outcome": "succeeded",
+    "trace_ref": "trace-001",
+    "observation_ref": "observations/episode-001",
+    "action_ref": "actions/episode-001",
+    "action_codec": "fixture.none",
+    "quality": {
+      "semantic_alignment": 1.0
+    },
+    "provenance": {
+      "generator_type": "scripted_expert",
+      "seed": 1,
+      "validator_versions": [
+        "oebp-fixture-validator/0.1.0"
+      ],
+      "human_review": "not_reviewed"
+    }
+  }
+}

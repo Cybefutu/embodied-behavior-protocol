@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oebp.dev/schemas/0.1/trace-span.schema.json",
+  "title": "OEBP TraceSpan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "version", "kind", "metadata", "spec"],
+  "properties": {
+    "protocol": {"const": "oebp"},
+    "version": {"type": "string", "pattern": "^0\\.1\\.[0-9]+$"},
+    "kind": {"const": "TraceSpan"},
+    "metadata": {"$ref": "#/$defs/metadata"},
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["trace_id", "span_id", "operation", "started_at", "status"],
+      "properties": {
+        "trace_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "span_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "parent_span_id": {"type": "string", "maxLength": 128},
+        "operation": {"type": "string", "minLength": 1, "maxLength": 128},
+        "behavior_ref": {"type": "string", "maxLength": 128},
+        "node_id": {"type": "string", "maxLength": 128},
+        "invocation_id": {"type": "string", "maxLength": 128},
+        "started_at": {"type": "string", "format": "date-time"},
+        "ended_at": {"type": "string", "format": "date-time"},
+        "duration_ms": {"type": "integer", "minimum": 0, "maximum": 86400000},
+        "status": {"enum": ["pending", "running", "succeeded", "failed", "canceled", "timeout", "unsafe", "internal_error"]},
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {"$ref": "#/$defs/jsonValue"},
+          "maxProperties": 128
+        },
+        "events": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/traceEvent"},
+          "maxItems": 512
+        },
+        "findings": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/finding"},
+          "maxItems": 128
+        }
+      }
+    }
+  },
+  "$defs": {
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "revision"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "revision": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "created_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "jsonValue": {
+      "oneOf": [
+        {"type": "string"},
+        {"type": "number"},
+        {"type": "boolean"},
+        {"type": "object", "maxProperties": 64},
+        {"type": "array", "maxItems": 64},
+        {"type": "null"}
+      ]
+    },
+    "traceEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "timestamp"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "maxLength": 128},
+        "timestamp": {"type": "string", "format": "date-time"},
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {"$ref": "#/$defs/jsonValue"},
+          "maxProperties": 64
+        }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["severity", "code", "message"],
+      "properties": {
+        "severity": {"enum": ["info", "warning", "error", "fatal"]},
+        "code": {"type": "string", "minLength": 1, "maxLength": 128},
+        "pointer": {"type": "string", "maxLength": 512},
+        "message": {"type": "string", "minLength": 1, "maxLength": 1024},
+        "context": {"type": "object", "maxProperties": 64},
+        "remediation": {"type": "string", "maxLength": 1024}
+      }
+    }
+  }
+}

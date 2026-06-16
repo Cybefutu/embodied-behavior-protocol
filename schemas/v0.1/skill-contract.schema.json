@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oebp.dev/schemas/0.1/skill-contract.schema.json",
+  "title": "OEBP SkillContract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "version", "kind", "metadata", "spec"],
+  "properties": {
+    "protocol": {"const": "oebp"},
+    "version": {"type": "string", "pattern": "^0\\.1\\.[0-9]+$"},
+    "kind": {"const": "SkillContract"},
+    "metadata": {"$ref": "#/$defs/metadata"},
+    "spec": {"$ref": "#/$defs/contract"}
+  },
+  "$defs": {
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "revision"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "revision": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "created_at": {"type": "string", "format": "date-time"},
+        "tags": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1, "maxLength": 64},
+          "maxItems": 32,
+          "uniqueItems": true
+        }
+      }
+    },
+    "parameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "required"],
+      "properties": {
+        "type": {"enum": ["EntityRef", "EffectorRef", "FrameRef", "Pose", "Number", "String", "Boolean"]},
+        "required": {"type": "boolean"},
+        "description": {"type": "string", "maxLength": 512},
+        "unit": {"type": "string", "maxLength": 32},
+        "default": {}
+      }
+    },
+    "failureCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["when", "error_code", "recoverable"],
+      "properties": {
+        "when": {"$ref": "#/$defs/expression"},
+        "error_code": {"type": "string", "minLength": 1, "maxLength": 128},
+        "recoverable": {"type": "boolean"},
+        "recovery_hint": {"type": "string", "maxLength": 512}
+      }
+    },
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "skill",
+        "parameters",
+        "preconditions",
+        "invariants",
+        "success_conditions",
+        "failure_conditions",
+        "timeout_ms",
+        "cancel_policy"
+      ],
+      "properties": {
+        "skill": {"type": "string", "minLength": 1, "maxLength": 128},
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {"$ref": "#/$defs/parameter"},
+          "maxProperties": 64
+        },
+        "preconditions": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/expression"},
+          "maxItems": 64
+        },
+        "invariants": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/expression"},
+          "maxItems": 64
+        },
+        "success_conditions": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/expression"},
+          "minItems": 1,
+          "maxItems": 64
+        },
+        "failure_conditions": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/failureCondition"},
+          "maxItems": 64
+        },
+        "timeout_ms": {"type": "integer", "minimum": 1, "maximum": 86400000},
+        "cancel_policy": {"enum": ["immediate_if_safe", "reach_safe_state", "adapter_defined"]},
+        "risk_class": {"enum": ["R0", "R1", "R2", "R3", "R4"]}
+      }
+    },
+    "jsonValue": {
+      "oneOf": [
+        {"type": "string"},
+        {"type": "number"},
+        {"type": "boolean"},
+        {"type": "object", "maxProperties": 64},
+        {"type": "array", "maxItems": 64},
+        {"type": "null"}
+      ]
+    },
+    "expression": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["op", "args"],
+          "properties": {
+            "op": {"enum": ["all", "any"]},
+            "args": {
+              "type": "array",
+              "items": {"$ref": "#/$defs/expression"},
+              "minItems": 1,
+              "maxItems": 32
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["op", "arg"],
+          "properties": {
+            "op": {"const": "not"},
+            "arg": {"$ref": "#/$defs/expression"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["op", "name", "subject"],
+          "properties": {
+            "op": {"const": "predicate"},
+            "name": {"type": "string", "minLength": 1, "maxLength": 128},
+            "subject": {"type": "string", "minLength": 1, "maxLength": 128},
+            "object": {"type": "string", "minLength": 1, "maxLength": 128},
+            "value": {"$ref": "#/$defs/jsonValue"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["op", "path"],
+          "properties": {
+            "op": {"const": "exists"},
+            "path": {"type": "string", "minLength": 1, "maxLength": 512}
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "protocol": "oebp",
+  "version": "0.1.0",
+  "kind": "InvocationRequest",
+  "metadata": {
+    "id": "org.oebp.fixtures.invocation.request.invalid",
+    "revision": "1.0.0",
+    "created_at": "2026-06-16T09:00:00Z"
+  },
+  "spec": {
+    "invocation_id": "invocation-001",
+    "behavior_ref": "org.oebp.fixtures.behavior.minimal",
+    "capability_profile_ref": "org.oebp.fixtures.capability.fixed_arm",
+    "context_ref": "org.oebp.fixtures.context.basic",
+    "requested_at": "2026-06-16T09:00:00Z",
+    "input": {
+      "object": "$object",
+      "effector": "arm/gripper"
+    },
+    "execution_policy": {
+      "timeout_ms": 0,
+      "cancellation": "allow",
+      "dry_run": true,
+      "allow_recovery": true,
+      "max_recovery_activations": 1,
+      "required_validation_gates": [
+        "schema",
+        "semantic",
+        "capability"
+      ]
+    }
+  }
+}

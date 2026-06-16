@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oebp.dev/schemas/0.1/capability-profile.schema.json",
+  "title": "OEBP CapabilityProfile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "version", "kind", "metadata", "spec"],
+  "properties": {
+    "protocol": {"const": "oebp"},
+    "version": {"type": "string", "pattern": "^0\\.1\\.[0-9]+$"},
+    "kind": {"const": "CapabilityProfile"},
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "revision"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "revision": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "created_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["embodiment_id", "embodiment_class", "effectors", "sensors", "frames", "capabilities", "adapter_bindings"],
+      "properties": {
+        "embodiment_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "embodiment_class": {"enum": ["fixed_manipulator", "mobile_manipulator", "humanoid", "quadruped", "wheeled_mobile", "drone", "other"]},
+        "effectors": {"type": "array", "items": {"$ref": "#/$defs/effector"}, "maxItems": 64},
+        "sensors": {"type": "array", "items": {"$ref": "#/$defs/sensor"}, "maxItems": 128},
+        "frames": {"type": "array", "items": {"$ref": "#/$defs/frame"}, "maxItems": 256},
+        "capabilities": {"type": "array", "items": {"$ref": "#/$defs/capability"}, "minItems": 1, "maxItems": 256},
+        "safety_envelopes": {"type": "array", "items": {"type": "object", "maxProperties": 64}, "maxItems": 64},
+        "adapter_bindings": {"type": "array", "items": {"$ref": "#/$defs/binding"}, "maxItems": 512}
+      }
+    }
+  },
+  "$defs": {
+    "effector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "frame"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "type": {"enum": ["parallel_gripper", "dexterous_hand", "suction", "tool", "none"]},
+        "frame": {"type": "string", "minLength": 1, "maxLength": 128},
+        "max_payload_kg": {"type": "number", "minimum": 0},
+        "max_aperture_m": {"type": "number", "minimum": 0},
+        "force_feedback": {"type": "boolean"}
+      }
+    },
+    "sensor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "type": {"enum": ["rgb_camera", "depth_camera", "lidar", "imu", "joint_encoder", "force_torque", "tactile", "microphone", "other"]},
+        "frame": {"type": "string", "maxLength": 128},
+        "rate_hz": {"type": "number", "exclusiveMinimum": 0}
+      }
+    },
+    "frame": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "parent": {"type": "string", "maxLength": 128}
+      }
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "support"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "support": {"enum": ["native", "policy", "planned", "experimental"]},
+        "parameters": {"type": "object", "maxProperties": 128},
+        "quality": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "expected_success": {"type": "number", "minimum": 0, "maximum": 1},
+            "p95_latency_ms": {"type": "integer", "minimum": 0}
+          }
+        }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["skill", "implementation", "parameter_map", "result_map"],
+      "properties": {
+        "skill": {"type": "string", "minLength": 1, "maxLength": 128},
+        "implementation": {
+          "type": "object",
+          "additionalProperties": true,
+          "maxProperties": 32,
+          "required": ["type"],
+          "properties": {
+            "type": {"enum": ["ros2_action", "local_function", "grpc_action", "behavior_tree", "motion_planner", "policy_model", "continuous_action_chunk", "action_token_codec", "vendor_sdk"]}
+          }
+        },
+        "parameter_map": {"type": "object", "additionalProperties": {"type": "string", "maxLength": 256}, "maxProperties": 128},
+        "result_map": {"type": "object", "additionalProperties": {"type": "string", "maxLength": 256}, "maxProperties": 128}
+      }
+    }
+  }
+}

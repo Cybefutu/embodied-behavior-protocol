@@ -1,0 +1,29 @@
+{
+  "protocol": "oebp",
+  "version": "0.1.0",
+  "kind": "TraceSpan",
+  "metadata": {
+    "id": "org.oebp.fixtures.trace.invalid",
+    "revision": "1.0.0",
+    "created_at": "2026-06-16T09:00:00Z"
+  },
+  "spec": {
+    "trace_id": "trace-001",
+    "operation": "runtime.invoke",
+    "behavior_ref": "org.oebp.fixtures.behavior.minimal",
+    "node_id": "noop",
+    "invocation_id": "invocation-001",
+    "started_at": "2026-06-16T09:00:00Z",
+    "status": "running",
+    "attributes": {
+      "adapter": "mock"
+    },
+    "events": [
+      {
+        "name": "accepted",
+        "timestamp": "2026-06-16T09:00:00Z"
+      }
+    ],
+    "findings": []
+  }
+}

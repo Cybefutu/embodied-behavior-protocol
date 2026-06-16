@@ -1,0 +1,20 @@
+{
+  "protocol": "oebp",
+  "version": "0.1.0",
+  "kind": "RobotProfile",
+  "metadata": {
+    "id": "org.oebp.invalid.bad-kind",
+    "revision": "1.0.0"
+  },
+  "spec": {
+    "embodiment_id": "org.oebp.robot.invalid",
+    "embodiment_class": "fixed_manipulator",
+    "effectors": [],
+    "sensors": [],
+    "frames": [],
+    "capabilities": [
+      {"id": "oebp.capability.meta.verify", "support": "native"}
+    ],
+    "adapter_bindings": []
+  }
+}

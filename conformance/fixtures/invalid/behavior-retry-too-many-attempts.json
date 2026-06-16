@@ -1,0 +1,37 @@
+{
+  "protocol": "oebp",
+  "version": "0.1.0",
+  "kind": "BehaviorSpec",
+  "metadata": {
+    "id": "org.oebp.invalid.retry-too-many",
+    "revision": "1.0.0"
+  },
+  "spec": {
+    "summary": "Retry attempts exceed schema maximum.",
+    "parameters": {},
+    "requirements": {
+      "capabilities": [],
+      "risk_class": "R0"
+    },
+    "contract": {
+      "preconditions": [],
+      "invariants": [],
+      "success_conditions": [
+        {"op": "exists", "path": "$robot"}
+      ],
+      "failure_conditions": [],
+      "timeout_ms": 1000
+    },
+    "root": {
+      "type": "retry",
+      "node_id": "retry-too-much",
+      "max_attempts": 11,
+      "child": {
+        "type": "invoke",
+        "node_id": "noop",
+        "skill": "oebp.skill.meta.verify@1",
+        "args": {}
+      }
+    }
+  }
+}

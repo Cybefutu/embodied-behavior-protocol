@@ -1,0 +1,495 @@
+{
+  "schema_version": "1.0",
+  "valid": [
+    {
+      "id": "valid.behavior.pick_and_place",
+      "schema": "schemas/v0.1/behavior-spec.schema.json",
+      "path": "examples/pick-and-place.behavior.json",
+      "reason": "Published behavior example must remain schema-valid."
+    },
+    {
+      "id": "valid.capability.generic_mobile_manipulator",
+      "schema": "schemas/v0.1/capability-profile.schema.json",
+      "path": "examples/generic-mobile-manipulator.capability.json",
+      "reason": "Published capability example must remain schema-valid."
+    },
+    {
+      "id": "valid.protocol.envelope.behavior",
+      "schema": "schemas/v0.1/protocol-envelope.schema.json",
+      "path": "conformance/fixtures/valid/protocol-envelope-behavior.json",
+      "reason": "Generated valid core fixture."
+    },
+    {
+      "id": "valid.protocol.envelope.context",
+      "schema": "schemas/v0.1/protocol-envelope.schema.json",
+      "path": "conformance/fixtures/valid/protocol-envelope-context.json",
+      "reason": "Generated valid core fixture."
+    },
+    {
+      "id": "valid.predicate.exists",
+      "schema": "schemas/v0.1/predicate-expression.schema.json",
+      "path": "conformance/fixtures/valid/predicate-exists.json",
+      "reason": "Generated valid core fixture."
+    },
+    {
+      "id": "valid.predicate.predicate",
+      "schema": "schemas/v0.1/predicate-expression.schema.json",
+      "path": "conformance/fixtures/valid/predicate-predicate.json",
+      "reason": "Generated valid core fixture."
+    },
+    {
+      "id": "valid.predicate.all",
+      "schema": "schemas/v0.1/predicate-expression.schema.json",
+      "path": "conformance/fixtures/valid/predicate-all.json",
+      "reason": "Generated valid core fixture."
+    },
+    {
+      "id": "valid.predicate.compare",
+      "schema": "schemas/v0.1/predicate-expression.schema.json",
+      "path": "conformance/fixtures/valid/predicate-compare.json",
+      "reason": "Generated valid core fixture."
+    },
+    {
+      "id": "valid.skill_contract.grasp",
+      "schema": "schemas/v0.1/skill-contract.schema.json",
+      "path": "conformance/fixtures/valid/skill-contract-grasp.json",
+      "reason": "Generated valid core fixture."
+    },
+    {
+      "id": "valid.skill_contract.place",
+      "schema": "schemas/v0.1/skill-contract.schema.json",
+      "path": "conformance/fixtures/valid/skill-contract-place.json",
+      "reason": "Generated valid core fixture."
+    },
+    {
+      "id": "valid.context.basic",
+      "schema": "schemas/v0.1/context-snapshot.schema.json",
+      "path": "conformance/fixtures/valid/context-basic.json",
+      "reason": "Generated valid core fixture."
+    },
+    {
+      "id": "valid.context.updated",
+      "schema": "schemas/v0.1/context-snapshot.schema.json",
+      "path": "conformance/fixtures/valid/context-updated.json",
+      "reason": "Generated valid core fixture."
+    },
+    {
+      "id": "valid.provenance.manual",
+      "schema": "schemas/v0.1/provenance-record.schema.json",
+      "path": "conformance/fixtures/valid/provenance-manual.json",
+      "reason": "Generated valid core fixture."
+    },
+    {
+      "id": "valid.provenance.llm_untrusted",
+      "schema": "schemas/v0.1/provenance-record.schema.json",
+      "path": "conformance/fixtures/valid/provenance-llm-untrusted.json",
+      "reason": "Generated valid core fixture."
+    },
+    {
+      "id": "valid.trace.running",
+      "schema": "schemas/v0.1/trace-span.schema.json",
+      "path": "conformance/fixtures/valid/trace-running.json",
+      "reason": "Generated valid core fixture."
+    },
+    {
+      "id": "valid.trace.failed",
+      "schema": "schemas/v0.1/trace-span.schema.json",
+      "path": "conformance/fixtures/valid/trace-failed.json",
+      "reason": "Generated valid core fixture."
+    },
+    {
+      "id": "valid.invocation.request",
+      "schema": "schemas/v0.1/invocation-request.schema.json",
+      "path": "conformance/fixtures/valid/invocation-request.json",
+      "reason": "Generated valid core fixture."
+    },
+    {
+      "id": "valid.invocation.feedback",
+      "schema": "schemas/v0.1/invocation-feedback.schema.json",
+      "path": "conformance/fixtures/valid/invocation-feedback.json",
+      "reason": "Generated valid core fixture."
+    },
+    {
+      "id": "valid.invocation.result_succeeded",
+      "schema": "schemas/v0.1/invocation-result.schema.json",
+      "path": "conformance/fixtures/valid/invocation-result-succeeded.json",
+      "reason": "Generated valid core fixture."
+    },
+    {
+      "id": "valid.invocation.result_failed",
+      "schema": "schemas/v0.1/invocation-result.schema.json",
+      "path": "conformance/fixtures/valid/invocation-result-failed.json",
+      "reason": "Generated valid core fixture."
+    },
+    {
+      "id": "valid.capability.fixed_arm",
+      "schema": "schemas/v0.1/capability-profile.schema.json",
+      "path": "conformance/fixtures/valid/capability-fixed-arm.json",
+      "reason": "Generated valid core fixture."
+    },
+    {
+      "id": "valid.behavior.minimal",
+      "schema": "schemas/v0.1/behavior-spec.schema.json",
+      "path": "conformance/fixtures/valid/behavior-minimal.json",
+      "reason": "Generated valid core fixture."
+    },
+    {
+      "id": "valid.episode.synthetic",
+      "schema": "schemas/v0.1/episode-annotation.schema.json",
+      "path": "conformance/fixtures/valid/episode-synthetic.json",
+      "reason": "Generated valid core fixture."
+    }
+  ],
+  "invalid": [
+    {
+      "id": "invalid.behavior.wrong_protocol",
+      "schema": "schemas/v0.1/behavior-spec.schema.json",
+      "path": "conformance/fixtures/invalid/behavior-wrong-protocol.json",
+      "reason": "The protocol field must be the constant string oebp.",
+      "expected_error_code": "OEBP_SCHEMA_PROTOCOL_CONST"
+    },
+    {
+      "id": "invalid.behavior.bad_version",
+      "schema": "schemas/v0.1/behavior-spec.schema.json",
+      "path": "conformance/fixtures/invalid/behavior-bad-version.json",
+      "reason": "BehaviorSpec version must match the v0.1 patch-version pattern.",
+      "expected_error_code": "OEBP_SCHEMA_VERSION_PATTERN"
+    },
+    {
+      "id": "invalid.behavior.missing_spec",
+      "schema": "schemas/v0.1/behavior-spec.schema.json",
+      "path": "conformance/fixtures/invalid/behavior-missing-spec.json",
+      "reason": "BehaviorSpec requires a top-level spec object.",
+      "expected_error_code": "OEBP_SCHEMA_SPEC_REQUIRED"
+    },
+    {
+      "id": "invalid.behavior.empty_success_conditions",
+      "schema": "schemas/v0.1/behavior-spec.schema.json",
+      "path": "conformance/fixtures/invalid/behavior-empty-success-conditions.json",
+      "reason": "Behavior contracts require at least one success condition.",
+      "expected_error_code": "OEBP_SCHEMA_SUCCESS_CONDITIONS_MIN_ITEMS"
+    },
+    {
+      "id": "invalid.behavior.retry_too_many_attempts",
+      "schema": "schemas/v0.1/behavior-spec.schema.json",
+      "path": "conformance/fixtures/invalid/behavior-retry-too-many-attempts.json",
+      "reason": "Retry nodes cap max_attempts at 10.",
+      "expected_error_code": "OEBP_SCHEMA_RETRY_MAX_ATTEMPTS"
+    },
+    {
+      "id": "invalid.capability.bad_kind",
+      "schema": "schemas/v0.1/capability-profile.schema.json",
+      "path": "conformance/fixtures/invalid/capability-bad-kind.json",
+      "reason": "CapabilityProfile documents must use kind CapabilityProfile.",
+      "expected_error_code": "OEBP_SCHEMA_KIND_CONST"
+    },
+    {
+      "id": "invalid.capability.unknown_embodiment_class",
+      "schema": "schemas/v0.1/capability-profile.schema.json",
+      "path": "conformance/fixtures/invalid/capability-unknown-embodiment-class.json",
+      "reason": "Embodiment class must be one of the enumerated schema values.",
+      "expected_error_code": "OEBP_SCHEMA_EMBODIMENT_CLASS_ENUM"
+    },
+    {
+      "id": "invalid.capability.empty_capabilities",
+      "schema": "schemas/v0.1/capability-profile.schema.json",
+      "path": "conformance/fixtures/invalid/capability-empty-capabilities.json",
+      "reason": "CapabilityProfile requires at least one capability.",
+      "expected_error_code": "OEBP_SCHEMA_CAPABILITIES_MIN_ITEMS"
+    },
+    {
+      "id": "invalid.episode.bad_outcome",
+      "schema": "schemas/v0.1/episode-annotation.schema.json",
+      "path": "conformance/fixtures/invalid/episode-bad-outcome.json",
+      "reason": "Episode outcome must be one of the enumerated values.",
+      "expected_error_code": "OEBP_SCHEMA_OUTCOME_ENUM"
+    },
+    {
+      "id": "invalid.episode.missing_provenance_seed",
+      "schema": "schemas/v0.1/episode-annotation.schema.json",
+      "path": "conformance/fixtures/invalid/episode-missing-provenance-seed.json",
+      "reason": "Episode provenance requires a seed.",
+      "expected_error_code": "OEBP_SCHEMA_PROVENANCE_SEED_REQUIRED"
+    },
+    {
+      "id": "invalid.protocol.missing_metadata",
+      "schema": "schemas/v0.1/protocol-envelope.schema.json",
+      "path": "conformance/fixtures/invalid/protocol-missing-metadata.json",
+      "reason": "ProtocolEnvelope requires metadata.",
+      "expected_error_code": "OEBP_SCHEMA_METADATA_REQUIRED"
+    },
+    {
+      "id": "invalid.protocol.unknown_kind",
+      "schema": "schemas/v0.1/protocol-envelope.schema.json",
+      "path": "conformance/fixtures/invalid/protocol-unknown-kind.json",
+      "reason": "ProtocolEnvelope kind must be a known OEBP kind.",
+      "expected_error_code": "OEBP_SCHEMA_KIND_ENUM"
+    },
+    {
+      "id": "invalid.protocol.bad_protocol",
+      "schema": "schemas/v0.1/protocol-envelope.schema.json",
+      "path": "conformance/fixtures/invalid/protocol-bad-protocol.json",
+      "reason": "ProtocolEnvelope protocol must be oebp.",
+      "expected_error_code": "OEBP_SCHEMA_PROTOCOL_CONST"
+    },
+    {
+      "id": "invalid.protocol.spec_not_object",
+      "schema": "schemas/v0.1/protocol-envelope.schema.json",
+      "path": "conformance/fixtures/invalid/protocol-spec-not-object.json",
+      "reason": "ProtocolEnvelope spec must be an object.",
+      "expected_error_code": "OEBP_SCHEMA_SPEC_TYPE"
+    },
+    {
+      "id": "invalid.predicate.missing_op",
+      "schema": "schemas/v0.1/predicate-expression.schema.json",
+      "path": "conformance/fixtures/invalid/predicate-missing-op.json",
+      "reason": "PredicateExpression must match one AST form.",
+      "expected_error_code": "OEBP_SCHEMA_PREDICATE_ONEOF"
+    },
+    {
+      "id": "invalid.predicate.all_empty_args",
+      "schema": "schemas/v0.1/predicate-expression.schema.json",
+      "path": "conformance/fixtures/invalid/predicate-all-empty-args.json",
+      "reason": "Compound predicate args must not be empty.",
+      "expected_error_code": "OEBP_SCHEMA_ARGS_MIN_ITEMS"
+    },
+    {
+      "id": "invalid.predicate.missing_subject",
+      "schema": "schemas/v0.1/predicate-expression.schema.json",
+      "path": "conformance/fixtures/invalid/predicate-missing-subject.json",
+      "reason": "Predicate form requires subject.",
+      "expected_error_code": "OEBP_SCHEMA_SUBJECT_REQUIRED"
+    },
+    {
+      "id": "invalid.predicate.bad_operator",
+      "schema": "schemas/v0.1/predicate-expression.schema.json",
+      "path": "conformance/fixtures/invalid/predicate-bad-operator.json",
+      "reason": "Compare predicate operator must be enumerated.",
+      "expected_error_code": "OEBP_SCHEMA_OPERATOR_ENUM"
+    },
+    {
+      "id": "invalid.skill_contract.missing_skill",
+      "schema": "schemas/v0.1/skill-contract.schema.json",
+      "path": "conformance/fixtures/invalid/skill-contract-missing-skill.json",
+      "reason": "SkillContract requires skill.",
+      "expected_error_code": "OEBP_SCHEMA_SKILL_REQUIRED"
+    },
+    {
+      "id": "invalid.skill_contract.empty_success",
+      "schema": "schemas/v0.1/skill-contract.schema.json",
+      "path": "conformance/fixtures/invalid/skill-contract-empty-success.json",
+      "reason": "SkillContract requires at least one success condition.",
+      "expected_error_code": "OEBP_SCHEMA_SUCCESS_CONDITIONS_MIN_ITEMS"
+    },
+    {
+      "id": "invalid.skill_contract.timeout_zero",
+      "schema": "schemas/v0.1/skill-contract.schema.json",
+      "path": "conformance/fixtures/invalid/skill-contract-timeout-zero.json",
+      "reason": "SkillContract timeout must be positive.",
+      "expected_error_code": "OEBP_SCHEMA_TIMEOUT_MINIMUM"
+    },
+    {
+      "id": "invalid.skill_contract.bad_cancel_policy",
+      "schema": "schemas/v0.1/skill-contract.schema.json",
+      "path": "conformance/fixtures/invalid/skill-contract-bad-cancel-policy.json",
+      "reason": "SkillContract cancel policy must be enumerated.",
+      "expected_error_code": "OEBP_SCHEMA_CANCEL_POLICY_ENUM"
+    },
+    {
+      "id": "invalid.context.missing_entities",
+      "schema": "schemas/v0.1/context-snapshot.schema.json",
+      "path": "conformance/fixtures/invalid/context-missing-entities.json",
+      "reason": "ContextSnapshot requires entities.",
+      "expected_error_code": "OEBP_SCHEMA_ENTITIES_REQUIRED"
+    },
+    {
+      "id": "invalid.context.entities_empty",
+      "schema": "schemas/v0.1/context-snapshot.schema.json",
+      "path": "conformance/fixtures/invalid/context-entities-empty.json",
+      "reason": "ContextSnapshot requires at least one entity.",
+      "expected_error_code": "OEBP_SCHEMA_ENTITIES_MIN_ITEMS"
+    },
+    {
+      "id": "invalid.context.entity_missing_type",
+      "schema": "schemas/v0.1/context-snapshot.schema.json",
+      "path": "conformance/fixtures/invalid/context-entity-missing-type.json",
+      "reason": "Context entity requires type.",
+      "expected_error_code": "OEBP_SCHEMA_ENTITY_TYPE_REQUIRED"
+    },
+    {
+      "id": "invalid.context.relation_missing_subject",
+      "schema": "schemas/v0.1/context-snapshot.schema.json",
+      "path": "conformance/fixtures/invalid/context-relation-missing-subject.json",
+      "reason": "Context relation requires subject.",
+      "expected_error_code": "OEBP_SCHEMA_RELATION_SUBJECT_REQUIRED"
+    },
+    {
+      "id": "invalid.provenance.missing_source_refs",
+      "schema": "schemas/v0.1/provenance-record.schema.json",
+      "path": "conformance/fixtures/invalid/provenance-missing-source-refs.json",
+      "reason": "ProvenanceRecord requires source refs.",
+      "expected_error_code": "OEBP_SCHEMA_SOURCE_REFS_REQUIRED"
+    },
+    {
+      "id": "invalid.provenance.source_refs_empty",
+      "schema": "schemas/v0.1/provenance-record.schema.json",
+      "path": "conformance/fixtures/invalid/provenance-source-refs-empty.json",
+      "reason": "ProvenanceRecord source refs must not be empty.",
+      "expected_error_code": "OEBP_SCHEMA_SOURCE_REFS_MIN_ITEMS"
+    },
+    {
+      "id": "invalid.provenance.bad_trust_level",
+      "schema": "schemas/v0.1/provenance-record.schema.json",
+      "path": "conformance/fixtures/invalid/provenance-bad-trust-level.json",
+      "reason": "ProvenanceRecord trust level must be enumerated.",
+      "expected_error_code": "OEBP_SCHEMA_TRUST_LEVEL_ENUM"
+    },
+    {
+      "id": "invalid.provenance.gate_bad_status",
+      "schema": "schemas/v0.1/provenance-record.schema.json",
+      "path": "conformance/fixtures/invalid/provenance-gate-bad-status.json",
+      "reason": "Validation gate status must be enumerated.",
+      "expected_error_code": "OEBP_SCHEMA_GATE_STATUS_ENUM"
+    },
+    {
+      "id": "invalid.trace.missing_span_id",
+      "schema": "schemas/v0.1/trace-span.schema.json",
+      "path": "conformance/fixtures/invalid/trace-missing-span-id.json",
+      "reason": "TraceSpan requires span_id.",
+      "expected_error_code": "OEBP_SCHEMA_SPAN_ID_REQUIRED"
+    },
+    {
+      "id": "invalid.trace.bad_status",
+      "schema": "schemas/v0.1/trace-span.schema.json",
+      "path": "conformance/fixtures/invalid/trace-bad-status.json",
+      "reason": "TraceSpan status must be enumerated.",
+      "expected_error_code": "OEBP_SCHEMA_TRACE_STATUS_ENUM"
+    },
+    {
+      "id": "invalid.trace.event_missing_timestamp",
+      "schema": "schemas/v0.1/trace-span.schema.json",
+      "path": "conformance/fixtures/invalid/trace-event-missing-timestamp.json",
+      "reason": "Trace event requires timestamp.",
+      "expected_error_code": "OEBP_SCHEMA_TRACE_EVENT_TIMESTAMP_REQUIRED"
+    },
+    {
+      "id": "invalid.trace.finding_missing_code",
+      "schema": "schemas/v0.1/trace-span.schema.json",
+      "path": "conformance/fixtures/invalid/trace-finding-missing-code.json",
+      "reason": "Trace finding requires code.",
+      "expected_error_code": "OEBP_SCHEMA_FINDING_CODE_REQUIRED"
+    },
+    {
+      "id": "invalid.invocation_request.missing_execution_policy",
+      "schema": "schemas/v0.1/invocation-request.schema.json",
+      "path": "conformance/fixtures/invalid/invocation-request-missing-policy.json",
+      "reason": "InvocationRequest requires execution_policy.",
+      "expected_error_code": "OEBP_SCHEMA_EXECUTION_POLICY_REQUIRED"
+    },
+    {
+      "id": "invalid.invocation_request.timeout_zero",
+      "schema": "schemas/v0.1/invocation-request.schema.json",
+      "path": "conformance/fixtures/invalid/invocation-request-timeout-zero.json",
+      "reason": "InvocationRequest timeout must be positive.",
+      "expected_error_code": "OEBP_SCHEMA_TIMEOUT_MINIMUM"
+    },
+    {
+      "id": "invalid.invocation_request.bad_cancellation",
+      "schema": "schemas/v0.1/invocation-request.schema.json",
+      "path": "conformance/fixtures/invalid/invocation-request-bad-cancellation.json",
+      "reason": "InvocationRequest cancellation must be enumerated.",
+      "expected_error_code": "OEBP_SCHEMA_CANCELLATION_ENUM"
+    },
+    {
+      "id": "invalid.invocation_request.empty_required_gates",
+      "schema": "schemas/v0.1/invocation-request.schema.json",
+      "path": "conformance/fixtures/invalid/invocation-request-empty-required-gates.json",
+      "reason": "InvocationRequest required gates must not be empty.",
+      "expected_error_code": "OEBP_SCHEMA_REQUIRED_GATES_MIN_ITEMS"
+    },
+    {
+      "id": "invalid.invocation_feedback.missing_sequence",
+      "schema": "schemas/v0.1/invocation-feedback.schema.json",
+      "path": "conformance/fixtures/invalid/invocation-feedback-missing-sequence.json",
+      "reason": "InvocationFeedback requires sequence.",
+      "expected_error_code": "OEBP_SCHEMA_SEQUENCE_REQUIRED"
+    },
+    {
+      "id": "invalid.invocation_feedback.sequence_negative",
+      "schema": "schemas/v0.1/invocation-feedback.schema.json",
+      "path": "conformance/fixtures/invalid/invocation-feedback-sequence-negative.json",
+      "reason": "InvocationFeedback sequence must not be negative.",
+      "expected_error_code": "OEBP_SCHEMA_SEQUENCE_MINIMUM"
+    },
+    {
+      "id": "invalid.invocation_feedback.bad_state",
+      "schema": "schemas/v0.1/invocation-feedback.schema.json",
+      "path": "conformance/fixtures/invalid/invocation-feedback-bad-state.json",
+      "reason": "InvocationFeedback state must be enumerated.",
+      "expected_error_code": "OEBP_SCHEMA_FEEDBACK_STATE_ENUM"
+    },
+    {
+      "id": "invalid.invocation_feedback.too_many_trace_refs",
+      "schema": "schemas/v0.1/invocation-feedback.schema.json",
+      "path": "conformance/fixtures/invalid/invocation-feedback-too-many-trace-refs.json",
+      "reason": "InvocationFeedback trace refs are bounded.",
+      "expected_error_code": "OEBP_SCHEMA_TRACE_REFS_MAX_ITEMS"
+    },
+    {
+      "id": "invalid.invocation_result.missing_terminal_state",
+      "schema": "schemas/v0.1/invocation-result.schema.json",
+      "path": "conformance/fixtures/invalid/invocation-result-missing-terminal-state.json",
+      "reason": "InvocationResult requires terminal_state.",
+      "expected_error_code": "OEBP_SCHEMA_TERMINAL_STATE_REQUIRED"
+    },
+    {
+      "id": "invalid.invocation_result.bad_terminal_state",
+      "schema": "schemas/v0.1/invocation-result.schema.json",
+      "path": "conformance/fixtures/invalid/invocation-result-bad-terminal-state.json",
+      "reason": "InvocationResult terminal_state must be enumerated.",
+      "expected_error_code": "OEBP_SCHEMA_TERMINAL_STATE_ENUM"
+    },
+    {
+      "id": "invalid.invocation_result.finding_missing_message",
+      "schema": "schemas/v0.1/invocation-result.schema.json",
+      "path": "conformance/fixtures/invalid/invocation-result-finding-missing-message.json",
+      "reason": "InvocationResult finding requires message.",
+      "expected_error_code": "OEBP_SCHEMA_FINDING_MESSAGE_REQUIRED"
+    },
+    {
+      "id": "invalid.invocation_result.activation_count_too_high",
+      "schema": "schemas/v0.1/invocation-result.schema.json",
+      "path": "conformance/fixtures/invalid/invocation-result-activation-count-too-high.json",
+      "reason": "InvocationResult recovery activation count is bounded.",
+      "expected_error_code": "OEBP_SCHEMA_RECOVERY_ACTIVATION_MAXIMUM"
+    },
+    {
+      "id": "invalid.behavior.bad_revision",
+      "schema": "schemas/v0.1/behavior-spec.schema.json",
+      "path": "conformance/fixtures/invalid/behavior-bad-revision.json",
+      "reason": "BehaviorSpec metadata revision must be semver.",
+      "expected_error_code": "OEBP_SCHEMA_REVISION_PATTERN"
+    },
+    {
+      "id": "invalid.behavior.bad_parameter_type",
+      "schema": "schemas/v0.1/behavior-spec.schema.json",
+      "path": "conformance/fixtures/invalid/behavior-bad-parameter-type.json",
+      "reason": "BehaviorSpec parameter type must be enumerated.",
+      "expected_error_code": "OEBP_SCHEMA_PARAMETER_TYPE_ENUM"
+    },
+    {
+      "id": "invalid.behavior.empty_children",
+      "schema": "schemas/v0.1/behavior-spec.schema.json",
+      "path": "conformance/fixtures/invalid/behavior-empty-children.json",
+      "reason": "BehaviorSpec composite nodes require children.",
+      "expected_error_code": "OEBP_SCHEMA_CHILDREN_MIN_ITEMS"
+    },
+    {
+      "id": "invalid.behavior.duplicate_resources",
+      "schema": "schemas/v0.1/behavior-spec.schema.json",
+      "path": "conformance/fixtures/invalid/behavior-duplicate-resources.json",
+      "reason": "BehaviorSpec node resources must be unique.",
+      "expected_error_code": "OEBP_SCHEMA_RESOURCES_UNIQUE_ITEMS"
+    }
+  ]
+}

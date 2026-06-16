@@ -1,0 +1,21 @@
+{
+  "protocol": "oebp",
+  "version": "0.1.0",
+  "kind": "EpisodeAnnotation",
+  "metadata": {
+    "id": "org.oebp.invalid.bad-outcome",
+    "revision": "1.0.0"
+  },
+  "spec": {
+    "episode_id": "episode/invalid",
+    "behavior_ref": "org.oebp.examples.pick-and-place",
+    "capability_profile_ref": "org.oebp.examples.generic-mobile-manipulator",
+    "outcome": "maybe",
+    "trace_ref": "trace.jsonl",
+    "provenance": {
+      "generator_type": "human_demo",
+      "seed": 1,
+      "validator_versions": ["oebp-validator/0.1.0"]
+    }
+  }
+}

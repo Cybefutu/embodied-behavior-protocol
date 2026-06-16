@@ -1,0 +1,43 @@
+name: OEBP CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Compile Python sources
+        run: python -m py_compile scripts/create_training_data.py scripts/run_conformance.py scripts/check_fixtures.py scripts/validate_oebp.py src/oebp/*.py
+
+      - name: Run unit tests
+        run: python -m unittest discover -s tests
+
+      - name: Check fixtures
+        run: python scripts/check_fixtures.py
+
+      - name: Run conformance suite
+        run: python scripts/run_conformance.py --json
+
+      - name: Create training-data views
+        run: python scripts/create_training_data.py --output-dir /tmp/oebp-training
+
+      - name: Check whitespace
+        run: git diff --check
+
+      - name: Check ASCII repository content
+        run: |
+          if grep -R -n -P '[^\x00-\x7F]' README.md docs scripts src tests datasets examples pyproject.toml; then
+            exit 1
+          fi

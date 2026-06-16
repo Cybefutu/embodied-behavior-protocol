@@ -1,0 +1,46 @@
+{
+  "protocol": "oebp",
+  "version": "0.1.0",
+  "kind": "SkillContract",
+  "metadata": {
+    "id": "org.oebp.fixtures.skill_contract.invalid",
+    "revision": "1.0.0",
+    "created_at": "2026-06-16T09:00:00Z"
+  },
+  "spec": {
+    "parameters": {
+      "object": {
+        "type": "EntityRef",
+        "required": true
+      },
+      "effector": {
+        "type": "EffectorRef",
+        "required": true
+      }
+    },
+    "preconditions": [
+      {
+        "op": "exists",
+        "path": "$object"
+      }
+    ],
+    "invariants": [
+      {
+        "op": "predicate",
+        "name": "oebp.state.safety_envelope_ok",
+        "subject": "$robot"
+      }
+    ],
+    "success_conditions": [
+      {
+        "op": "predicate",
+        "name": "oebp.relation.held_by",
+        "subject": "$object"
+      }
+    ],
+    "failure_conditions": [],
+    "timeout_ms": 5000,
+    "cancel_policy": "reach_safe_state",
+    "risk_class": "R2"
+  }
+}

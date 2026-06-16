@@ -1,0 +1,43 @@
+{
+  "protocol": "oebp",
+  "version": "0.1.0",
+  "kind": "BehaviorSpec",
+  "metadata": {
+    "id": "org.oebp.fixtures.behavior.invalid",
+    "revision": "1.0.0",
+    "created_at": "2026-06-16T09:00:00Z"
+  },
+  "spec": {
+    "summary": "Minimal schema-valid behavior fixture.",
+    "parameters": {
+      "object": {
+        "type": "RobotSoul",
+        "required": true
+      }
+    },
+    "requirements": {
+      "capabilities": [],
+      "risk_class": "R1"
+    },
+    "contract": {
+      "preconditions": [],
+      "invariants": [],
+      "success_conditions": [
+        {
+          "op": "predicate",
+          "name": "oebp.state.complete",
+          "subject": "$task"
+        }
+      ],
+      "failure_conditions": [],
+      "timeout_ms": 1000,
+      "cancel_policy": "adapter_defined"
+    },
+    "root": {
+      "type": "invoke",
+      "node_id": "noop",
+      "skill": "oebp.skill.meta.noop@1",
+      "args": {}
+    }
+  }
+}

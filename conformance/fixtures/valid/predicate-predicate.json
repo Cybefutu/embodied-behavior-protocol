@@ -1,0 +1,16 @@
+{
+  "protocol": "oebp",
+  "version": "0.1.0",
+  "kind": "PredicateExpression",
+  "metadata": {
+    "id": "org.oebp.fixtures.predicate.predicate",
+    "revision": "1.0.0",
+    "created_at": "2026-06-16T09:00:00Z"
+  },
+  "spec": {
+    "op": "predicate",
+    "name": "oebp.state.ready",
+    "subject": "$robot",
+    "value": true
+  }
+}

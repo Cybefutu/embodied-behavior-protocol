@@ -1,0 +1,227 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oebp.dev/schemas/0.1/behavior-spec.schema.json",
+  "title": "OEBP BehaviorSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "version", "kind", "metadata", "spec"],
+  "properties": {
+    "protocol": {"const": "oebp"},
+    "version": {"type": "string", "pattern": "^0\\.1\\.[0-9]+$"},
+    "kind": {"const": "BehaviorSpec"},
+    "metadata": {"$ref": "#/$defs/metadata"},
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["summary", "parameters", "requirements", "contract", "root"],
+      "properties": {
+        "summary": {"type": "string", "minLength": 1, "maxLength": 2048},
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {"$ref": "#/$defs/parameter"},
+          "maxProperties": 64
+        },
+        "requirements": {"$ref": "#/$defs/requirements"},
+        "contract": {"$ref": "#/$defs/contract"},
+        "root": {"$ref": "#/$defs/node"},
+        "recoveries": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/recovery"},
+          "maxItems": 32
+        }
+      }
+    }
+  },
+  "$defs": {
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "revision"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]+$"},
+        "revision": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "created_at": {"type": "string", "format": "date-time"},
+        "license": {"type": "string", "maxLength": 128},
+        "tags": {"type": "array", "items": {"type": "string", "maxLength": 64}, "maxItems": 32, "uniqueItems": true}
+      }
+    },
+    "parameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "required"],
+      "properties": {
+        "type": {"enum": ["EntityRef", "EffectorRef", "FrameRef", "Pose", "Number", "String", "Boolean"]},
+        "required": {"type": "boolean"},
+        "description": {"type": "string", "maxLength": 512},
+        "unit": {"type": "string", "maxLength": 32},
+        "default": {}
+      }
+    },
+    "requirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["capabilities", "risk_class"],
+      "properties": {
+        "capabilities": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id"],
+            "properties": {
+              "id": {"type": "string", "minLength": 1, "maxLength": 128},
+              "constraints": {"type": "object", "maxProperties": 64}
+            }
+          }
+        },
+        "resources": {"type": "array", "items": {"type": "string", "maxLength": 128}, "maxItems": 64, "uniqueItems": true},
+        "risk_class": {"enum": ["R0", "R1", "R2", "R3", "R4"]}
+      }
+    },
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["preconditions", "invariants", "success_conditions", "failure_conditions", "timeout_ms"],
+      "properties": {
+        "preconditions": {"type": "array", "items": {"$ref": "#/$defs/expression"}, "maxItems": 64},
+        "invariants": {"type": "array", "items": {"$ref": "#/$defs/expression"}, "maxItems": 64},
+        "success_conditions": {"type": "array", "items": {"$ref": "#/$defs/expression"}, "minItems": 1, "maxItems": 64},
+        "failure_conditions": {"type": "array", "items": {"$ref": "#/$defs/failureCondition"}, "maxItems": 64},
+        "timeout_ms": {"type": "integer", "minimum": 1, "maximum": 86400000},
+        "cancel_policy": {"enum": ["immediate_if_safe", "reach_safe_state", "adapter_defined"]}
+      }
+    },
+    "failureCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["when", "error_code", "recoverable"],
+      "properties": {
+        "when": {"$ref": "#/$defs/expression"},
+        "error_code": {"type": "string", "minLength": 1, "maxLength": 128},
+        "recoverable": {"type": "boolean"}
+      }
+    },
+    "expression": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["op", "args"],
+          "properties": {
+            "op": {"enum": ["all", "any"]},
+            "args": {"type": "array", "items": {"$ref": "#/$defs/expression"}, "minItems": 1, "maxItems": 32}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["op", "arg"],
+          "properties": {
+            "op": {"const": "not"},
+            "arg": {"$ref": "#/$defs/expression"}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["op", "name", "subject"],
+          "properties": {
+            "op": {"const": "predicate"},
+            "name": {"type": "string", "minLength": 1, "maxLength": 128},
+            "subject": {"type": "string", "minLength": 1, "maxLength": 128},
+            "object": {"type": "string", "maxLength": 128},
+            "value": {}
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["op", "path"],
+          "properties": {
+            "op": {"const": "exists"},
+            "path": {"type": "string", "minLength": 1, "maxLength": 512}
+          }
+        }
+      ]
+    },
+    "node": {
+      "oneOf": [
+        {"$ref": "#/$defs/invokeNode"},
+        {"$ref": "#/$defs/compositeNode"},
+        {"$ref": "#/$defs/retryNode"},
+        {"$ref": "#/$defs/timeoutNode"},
+        {"$ref": "#/$defs/guardNode"}
+      ]
+    },
+    "invokeNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "node_id", "skill", "args"],
+      "properties": {
+        "type": {"const": "invoke"},
+        "node_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "skill": {"type": "string", "minLength": 1, "maxLength": 128},
+        "args": {"type": "object", "maxProperties": 128},
+        "resources": {"type": "array", "items": {"type": "string", "maxLength": 128}, "maxItems": 64, "uniqueItems": true}
+      }
+    },
+    "compositeNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "node_id", "children"],
+      "properties": {
+        "type": {"enum": ["sequence", "fallback", "parallel"]},
+        "node_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "children": {"type": "array", "items": {"$ref": "#/$defs/node"}, "minItems": 1, "maxItems": 64},
+        "success_policy": {"enum": ["all", "any"]},
+        "failure_policy": {"enum": ["any", "all"]}
+      }
+    },
+    "retryNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "node_id", "max_attempts", "child"],
+      "properties": {
+        "type": {"const": "retry"},
+        "node_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "max_attempts": {"type": "integer", "minimum": 1, "maximum": 10},
+        "backoff_ms": {"type": "integer", "minimum": 0, "maximum": 60000},
+        "child": {"$ref": "#/$defs/node"}
+      }
+    },
+    "timeoutNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "node_id", "timeout_ms", "child"],
+      "properties": {
+        "type": {"const": "timeout"},
+        "node_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "timeout_ms": {"type": "integer", "minimum": 1, "maximum": 86400000},
+        "child": {"$ref": "#/$defs/node"}
+      }
+    },
+    "guardNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "node_id", "condition", "child"],
+      "properties": {
+        "type": {"const": "guard"},
+        "node_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "condition": {"$ref": "#/$defs/expression"},
+        "on_false": {"enum": ["fail", "skip", "block"]},
+        "child": {"$ref": "#/$defs/node"}
+      }
+    },
+    "recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["on", "max_activations", "behavior"],
+      "properties": {
+        "on": {"type": "array", "items": {"type": "string", "maxLength": 128}, "minItems": 1, "maxItems": 32},
+        "max_activations": {"type": "integer", "minimum": 1, "maximum": 10},
+        "behavior": {"$ref": "#/$defs/node"}
+      }
+    }
+  }
+}

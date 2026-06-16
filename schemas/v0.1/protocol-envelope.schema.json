@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oebp.dev/schemas/0.1/protocol-envelope.schema.json",
+  "title": "OEBP ProtocolEnvelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "version", "kind", "metadata", "spec"],
+  "properties": {
+    "protocol": {"const": "oebp"},
+    "version": {"type": "string", "pattern": "^0\\.1\\.[0-9]+$"},
+    "kind": {
+      "enum": [
+        "BehaviorSpec",
+        "CapabilityProfile",
+        "ContextSnapshot",
+        "EpisodeAnnotation",
+        "InvocationFeedback",
+        "InvocationRequest",
+        "InvocationResult",
+        "PredicateExpression",
+        "ProvenanceRecord",
+        "SkillContract",
+        "TraceSpan"
+      ]
+    },
+    "metadata": {"$ref": "#/$defs/metadata"},
+    "spec": {"type": "object", "maxProperties": 256}
+  },
+  "$defs": {
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "revision"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-z0-9][a-z0-9._:/@-]*$"},
+        "revision": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "created_at": {"type": "string", "format": "date-time"},
+        "license": {"type": "string", "maxLength": 128},
+        "tags": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1, "maxLength": 64},
+          "maxItems": 32,
+          "uniqueItems": true
+        },
+        "labels": {
+          "type": "object",
+          "propertyNames": {"type": "string", "minLength": 1, "maxLength": 64},
+          "additionalProperties": {"type": "string", "maxLength": 256},
+          "maxProperties": 32
+        }
+      }
+    }
+  }
+}

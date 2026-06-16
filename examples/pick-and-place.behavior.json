@@ -1,0 +1,128 @@
+{
+  "protocol": "oebp",
+  "version": "0.1.0",
+  "kind": "BehaviorSpec",
+  "metadata": {
+    "id": "org.oebp.examples.pick-and-place",
+    "revision": "1.0.0",
+    "created_at": "2026-06-16T09:00:00Z",
+    "license": "CC-BY-4.0",
+    "tags": ["manipulation", "example"]
+  },
+  "spec": {
+    "summary": "Pick an object from its current support surface and place it on a target surface.",
+    "parameters": {
+      "object": {"type": "EntityRef", "required": true},
+      "target": {"type": "EntityRef", "required": true},
+      "effector": {"type": "EffectorRef", "required": true}
+    },
+    "requirements": {
+      "capabilities": [
+        {"id": "oebp.capability.perception.object_pose"},
+        {"id": "oebp.capability.manipulation.grasp"},
+        {"id": "oebp.capability.manipulation.place"}
+      ],
+      "resources": ["$effector"],
+      "risk_class": "R2"
+    },
+    "contract": {
+      "preconditions": [
+        {"op": "exists", "path": "$object"},
+        {"op": "exists", "path": "$target"},
+        {"op": "predicate", "name": "oebp.relation.visible_to", "subject": "$object", "object": "$robot"}
+      ],
+      "invariants": [
+        {"op": "predicate", "name": "oebp.state.safety_envelope_ok", "subject": "$robot"}
+      ],
+      "success_conditions": [
+        {"op": "predicate", "name": "oebp.relation.on", "subject": "$object", "object": "$target"}
+      ],
+      "failure_conditions": [
+        {
+          "when": {"op": "predicate", "name": "oebp.event.emergency_stop", "subject": "$robot"},
+          "error_code": "oebp.error.safety.emergency_stop@1",
+          "recoverable": false
+        }
+      ],
+      "timeout_ms": 30000,
+      "cancel_policy": "reach_safe_state"
+    },
+    "root": {
+      "type": "sequence",
+      "node_id": "pick-place-sequence",
+      "children": [
+        {
+          "type": "invoke",
+          "node_id": "estimate-object-pose",
+          "skill": "oebp.skill.perception.estimate_pose@1",
+          "args": {"entity": "$object"}
+        },
+        {
+          "type": "invoke",
+          "node_id": "reach-object",
+          "skill": "oebp.skill.manipulation.reach@1",
+          "args": {"target": "$object", "effector": "$effector"},
+          "resources": ["$effector"]
+        },
+        {
+          "type": "retry",
+          "node_id": "retry-grasp",
+          "max_attempts": 2,
+          "backoff_ms": 250,
+          "child": {
+            "type": "invoke",
+            "node_id": "grasp-object",
+            "skill": "oebp.skill.manipulation.grasp@1",
+            "args": {"object": "$object", "effector": "$effector"},
+            "resources": ["$effector"]
+          }
+        },
+        {
+          "type": "invoke",
+          "node_id": "lift-object",
+          "skill": "oebp.skill.manipulation.lift@1",
+          "args": {"object": "$object", "effector": "$effector", "distance_m": 0.12},
+          "resources": ["$effector"]
+        },
+        {
+          "type": "invoke",
+          "node_id": "place-object",
+          "skill": "oebp.skill.manipulation.place@1",
+          "args": {"object": "$object", "target": "$target", "effector": "$effector"},
+          "resources": ["$effector"]
+        },
+        {
+          "type": "invoke",
+          "node_id": "verify-result",
+          "skill": "oebp.skill.meta.verify@1",
+          "args": {"predicate": "object_on_target", "object": "$object", "target": "$target"}
+        }
+      ]
+    },
+    "recoveries": [
+      {
+        "on": ["oebp.error.manipulation.object_slipped@1"],
+        "max_activations": 1,
+        "behavior": {
+          "type": "sequence",
+          "node_id": "slip-recovery",
+          "children": [
+            {
+              "type": "invoke",
+              "node_id": "safe-release",
+              "skill": "oebp.skill.manipulation.release@1",
+              "args": {"effector": "$effector"},
+              "resources": ["$effector"]
+            },
+            {
+              "type": "invoke",
+              "node_id": "re-estimate-object",
+              "skill": "oebp.skill.perception.estimate_pose@1",
+              "args": {"entity": "$object"}
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "protocol": "oebp",
+  "version": "0.1.0",
+  "kind": "ProvenanceRecord",
+  "metadata": {
+    "id": "org.oebp.fixtures.provenance.invalid",
+    "revision": "1.0.0",
+    "created_at": "2026-06-16T09:00:00Z"
+  },
+  "spec": {
+    "record_id": "provenance.invalid",
+    "generator_type": "manual_authoring",
+    "created_at": "2026-06-16T09:00:00Z",
+    "source_refs": [
+      "spec/v0.1/core.md"
+    ],
+    "validator_versions": [
+      "oebp-fixture-validator/0.1.0"
+    ],
+    "validation_gates": [
+      {
+        "gate": "schema",
+        "status": "maybe",
+        "tool": "scripts/check_fixtures.py",
+        "version": "0.1.0"
+      }
+    ],
+    "human_review": "not_reviewed",
+    "trust_level": "untrusted"
+  }
+}

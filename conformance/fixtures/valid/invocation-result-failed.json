@@ -1,0 +1,31 @@
+{
+  "protocol": "oebp",
+  "version": "0.1.0",
+  "kind": "InvocationResult",
+  "metadata": {
+    "id": "org.oebp.fixtures.invocation.result_failed",
+    "revision": "1.0.0",
+    "created_at": "2026-06-16T09:00:00Z"
+  },
+  "spec": {
+    "invocation_id": "invocation-001",
+    "completed_at": "2026-06-16T09:00:02Z",
+    "terminal_state": "failed",
+    "output": {
+      "done": false
+    },
+    "trace_ref": "trace-001",
+    "findings": [
+      {
+        "severity": "error",
+        "code": "OEBP_RUNTIME_FIXTURE_FAILURE",
+        "message": "Fixture failure."
+      }
+    ],
+    "recovery_summary": {
+      "attempted": false,
+      "activation_count": 0,
+      "succeeded": false
+    }
+  }
+}

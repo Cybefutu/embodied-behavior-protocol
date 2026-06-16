@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oebp.dev/schemas/0.1/provenance-record.schema.json",
+  "title": "OEBP ProvenanceRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "version", "kind", "metadata", "spec"],
+  "properties": {
+    "protocol": {"const": "oebp"},
+    "version": {"type": "string", "pattern": "^0\\.1\\.[0-9]+$"},
+    "kind": {"const": "ProvenanceRecord"},
+    "metadata": {"$ref": "#/$defs/metadata"},
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_id", "generator_type", "created_at", "source_refs", "validator_versions", "trust_level"],
+      "properties": {
+        "record_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "generator_type": {
+          "enum": [
+            "human_demo",
+            "transformed_demo",
+            "scripted_expert",
+            "motion_planner",
+            "rl_policy",
+            "vla_policy",
+            "llm_assisted_simulation",
+            "manual_authoring",
+            "other"
+          ]
+        },
+        "created_at": {"type": "string", "format": "date-time"},
+        "source_refs": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1, "maxLength": 256},
+          "minItems": 1,
+          "maxItems": 128
+        },
+        "model": {"type": "string", "maxLength": 256},
+        "prompt_template_hash": {"type": "string", "maxLength": 128},
+        "seed": {"type": "integer"},
+        "asset_ids": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1, "maxLength": 128},
+          "maxItems": 256,
+          "uniqueItems": true
+        },
+        "simulator": {"type": "string", "maxLength": 128},
+        "adapter_version": {"type": "string", "maxLength": 64},
+        "validator_versions": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1, "maxLength": 128},
+          "minItems": 1,
+          "maxItems": 64
+        },
+        "validation_gates": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/validationGate"},
+          "maxItems": 64
+        },
+        "human_review": {"enum": ["not_reviewed", "approved", "approved_with_notes", "rejected"]},
+        "trust_level": {"enum": ["untrusted", "validated", "reviewed", "production_approved"]}
+      }
+    }
+  },
+  "$defs": {
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "revision"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "revision": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "created_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "validationGate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gate", "status", "tool"],
+      "properties": {
+        "gate": {"enum": ["schema", "semantic", "capability", "risk", "mock_runtime", "human_review"]},
+        "status": {"enum": ["passed", "failed", "skipped"]},
+        "tool": {"type": "string", "minLength": 1, "maxLength": 128},
+        "version": {"type": "string", "maxLength": 64},
+        "completed_at": {"type": "string", "format": "date-time"},
+        "finding_codes": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1, "maxLength": 128},
+          "maxItems": 128
+        }
+      }
+    }
+  }
+}

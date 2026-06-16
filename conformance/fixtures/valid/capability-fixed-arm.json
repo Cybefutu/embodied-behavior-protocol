@@ -1,0 +1,53 @@
+{
+  "protocol": "oebp",
+  "version": "0.1.0",
+  "kind": "CapabilityProfile",
+  "metadata": {
+    "id": "org.oebp.fixtures.capability.fixed_arm",
+    "revision": "1.0.0",
+    "created_at": "2026-06-16T09:00:00Z"
+  },
+  "spec": {
+    "embodiment_id": "org.oebp.robot.fixture-fixed-arm",
+    "embodiment_class": "fixed_manipulator",
+    "effectors": [
+      {
+        "id": "arm/gripper",
+        "type": "parallel_gripper",
+        "frame": "arm/tool",
+        "max_payload_kg": 2.0,
+        "max_aperture_m": 0.08,
+        "force_feedback": false
+      }
+    ],
+    "sensors": [
+      {
+        "id": "arm/rgbd",
+        "type": "depth_camera",
+        "frame": "arm/camera",
+        "rate_hz": 30
+      }
+    ],
+    "frames": [
+      {
+        "id": "world"
+      },
+      {
+        "id": "arm/base",
+        "parent": "world"
+      },
+      {
+        "id": "arm/tool",
+        "parent": "arm/base"
+      }
+    ],
+    "capabilities": [
+      {
+        "id": "oebp.capability.manipulation.grasp",
+        "support": "planned",
+        "parameters": {}
+      }
+    ],
+    "adapter_bindings": []
+  }
+}

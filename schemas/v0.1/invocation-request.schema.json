@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://oebp.dev/schemas/0.1/invocation-request.schema.json",
+  "title": "OEBP InvocationRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "version", "kind", "metadata", "spec"],
+  "properties": {
+    "protocol": {"const": "oebp"},
+    "version": {"type": "string", "pattern": "^0\\.1\\.[0-9]+$"},
+    "kind": {"const": "InvocationRequest"},
+    "metadata": {"$ref": "#/$defs/metadata"},
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "invocation_id",
+        "behavior_ref",
+        "capability_profile_ref",
+        "requested_at",
+        "input",
+        "execution_policy"
+      ],
+      "properties": {
+        "invocation_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "behavior_ref": {"type": "string", "minLength": 1, "maxLength": 128},
+        "capability_profile_ref": {"type": "string", "minLength": 1, "maxLength": 128},
+        "context_ref": {"type": "string", "maxLength": 128},
+        "requested_at": {"type": "string", "format": "date-time"},
+        "input": {
+          "type": "object",
+          "additionalProperties": {"$ref": "#/$defs/jsonValue"},
+          "maxProperties": 128
+        },
+        "execution_policy": {"$ref": "#/$defs/executionPolicy"},
+        "provenance_ref": {"type": "string", "maxLength": 128}
+      }
+    }
+  },
+  "$defs": {
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "revision"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "revision": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+        "created_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "jsonValue": {
+      "oneOf": [
+        {"type": "string"},
+        {"type": "number"},
+        {"type": "boolean"},
+        {"type": "object", "maxProperties": 64},
+        {"type": "array", "maxItems": 64},
+        {"type": "null"}
+      ]
+    },
+    "executionPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["timeout_ms", "cancellation", "dry_run"],
+      "properties": {
+        "timeout_ms": {"type": "integer", "minimum": 1, "maximum": 86400000},
+        "cancellation": {"enum": ["allow", "deny", "adapter_defined"]},
+        "dry_run": {"type": "boolean"},
+        "allow_recovery": {"type": "boolean"},
+        "max_recovery_activations": {"type": "integer", "minimum": 0, "maximum": 10},
+        "required_validation_gates": {
+          "type": "array",
+          "items": {"enum": ["schema", "semantic", "capability", "risk", "mock_runtime", "human_review"]},
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

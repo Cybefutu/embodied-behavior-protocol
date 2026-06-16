@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use OEBP in research, please cite the repository until a formal specification release is published."
+title: "Open Embodied Behavior Protocol"
+version: "0.1.0-proposal"
+date-released: "2026-06-16"
+authors:
+  - name: "OEBP Contributors"
+repository-code: "https://github.com/Cybefutu/embodied-behavior-protocol"
+license: "Apache-2.0 AND CC-BY-4.0"
+

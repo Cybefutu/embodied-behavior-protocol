@@ -1,0 +1,30 @@
+name: Interoperability report
+description: Report how OEBP maps to a robot, simulator, middleware, or dataset.
+title: "[Interop]: "
+labels: ["interoperability", "needs-triage"]
+body:
+  - type: input
+    id: target
+    attributes:
+      label: Target
+      description: Robot, simulator, middleware, dataset, SDK, or adapter.
+    validations:
+      required: true
+  - type: textarea
+    id: mapping
+    attributes:
+      label: Mapping
+      description: Which OEBP concepts map cleanly, and which do not?
+    validations:
+      required: true
+  - type: textarea
+    id: gaps
+    attributes:
+      label: Gaps
+      description: Missing capabilities, ambiguous semantics, safety issues, or schema limitations.
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Links to examples, logs, traces, fixtures, demos, or implementation notes.
+
